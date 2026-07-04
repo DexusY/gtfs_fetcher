@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: gtfs_backend
+    # /metrics requires the METRICS_TOKEN the backend was started with.
+    # Put the same value here (or mount it via credentials_file).
+    authorization:
+      type: Bearer
+      credentials: CHANGE_ME_METRICS_TOKEN
+    static_configs:
+      - targets: ["gtfs-backend:8000"]
+
+  - job_name: cadvisor
+    static_configs:
+      - targets: ["cadvisor:8080"]

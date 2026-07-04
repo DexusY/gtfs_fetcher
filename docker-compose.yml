@@ -1,0 +1,48 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: gtfs-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: gtfs_app
+    ports:
+      - "127.0.0.1:5432:5432"   # loopback only — host dev needs it, the network doesn't
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d gtfs_app"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: gtfs-backend
+    env_file: ./.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://admin:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/gtfs_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - ./c_modules:/c_modules
+    ports:
+      - "8000:8000"
+    command: sh -c "make -C /c_modules && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+
+  frontend:
+    build: ./frontend
+    container_name: gtfs-frontend
+    environment:
+      VITE_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

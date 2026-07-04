@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Configure and preview live transit departure boards for e-paper displays" />
+    <meta name="theme-color" content="#FAFAFB" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#08080B" media="(prefers-color-scheme: dark)" />
+    <title>GTFS Board · Transit Dashboard</title>
+    <script>
+      // Resolve theme before first paint so dark-mode users never see a light flash.
+      // Mirrors ThemeProvider (STORAGE_KEY 'gtfs-theme', 'system' falls back to OS).
+      (function () {
+        try {
+          var pref = localStorage.getItem('gtfs-theme');
+          var theme = pref === 'light' || pref === 'dark'
+            ? pref
+            : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var root = document.documentElement;
+          root.setAttribute('data-theme', theme);
+          root.style.colorScheme = theme;
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

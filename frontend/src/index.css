@@ -1,0 +1,278 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design system — modern dashboard tokens.
+  Light + dark themes via [data-theme] on <html>.
+  Channel values (no rgb()) so Tailwind <alpha-value> works.
+*/
+
+:root, :root[data-theme="light"] {
+  /* Surfaces */
+  --c-canvas:        250 250 251;   /* page background */
+  --c-surface:       255 255 255;   /* cards */
+  --c-elevated:      244 244 246;   /* inset / hover bg */
+  --c-hover:         241 241 244;
+  /* Lines */
+  --c-line:          228 228 232;
+  --c-line-strong:   212 212 219;
+  /* Foreground */
+  --c-fg:             9   9   11;
+  --c-fg-muted:      82  82   91;
+  --c-fg-subtle:    113 113 122;
+  /* Brand — Cloudflare-adjacent orange, but slightly warmer */
+  --c-brand:        244 114  22;
+  --c-brand-hover:  232  88   12;
+  --c-brand-soft:   254 234 220;
+  /* Status */
+  --c-success:       16 161 105;
+  --c-success-soft: 220 246 234;
+  --c-warning:      217 119   6;
+  --c-warning-soft: 254 240 213;
+  --c-danger:       220  38   38;
+  --c-danger-soft:  253 226 226;
+  --c-info:          37  99 235;
+  --c-info-soft:    222 234 254;
+  /* "On-soft" text shades — the base semantic hues fail AA as small text on their
+     own near-white soft tint, so text on *Soft / brand-tint surfaces uses these. */
+  --c-brand-text:   154  52  18;
+  --c-success-text:   6  95  70;
+  --c-warning-text: 146  64  14;
+  --c-danger-text:  153  27  27;
+  --c-info-text:     30  64 175;
+  /* Layout-editor field categories — a functional data palette, distinct from
+     status. Solid shades are AA on their own soft tint (text-on-tint pattern). */
+  --c-cat-static:       37  99 235;  --c-cat-static-soft: 224 233 254;
+  --c-cat-line:        180  83   9;  --c-cat-line-soft:   251 240 214;
+  --c-cat-dest:          4 120  87;  --c-cat-dest-soft:   214 245 232;
+  --c-cat-time:        109  40 217;  --c-cat-time-soft:   235 226 252;
+  /* Snap-guide overlay drawn over user images (theme-independent on purpose) */
+  --c-snap:            236  72 153;
+
+  /* Shadows + textures */
+  --shadow-card:        0 1px 0 rgb(228 228 232 / 0.65), 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -8px rgb(15 15 20 / 0.08);
+  --shadow-card-hover:  0 1px 0 rgb(228 228 232 / 0.65), 0 4px 12px rgb(0 0 0 / 0.06), 0 24px 48px -16px rgb(15 15 20 / 0.12);
+  --shadow-pop:         0 8px 24px -8px rgb(15 15 20 / 0.18), 0 24px 48px -16px rgb(15 15 20 / 0.12);
+
+  --bg-grid: radial-gradient(circle at 1px 1px, rgb(0 0 0 / 0.07) 1px, transparent 0);
+  --bg-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.85 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --c-canvas:         8   8  11;
+  --c-surface:       17  17  20;
+  --c-elevated:      24  24  28;
+  --c-hover:         32  32  36;
+  --c-line:          38  38  44;
+  --c-line-strong:   54  54  62;
+  --c-fg:           250 250 250;
+  --c-fg-muted:     161 161 170;
+  /* Bumped from 113·113·122 (~3.9:1) so small subtle text clears AA on dark surfaces */
+  --c-fg-subtle:    140 140 150;
+  /* Brand stays vivid but slightly cooler in dark to balance contrast */
+  --c-brand:        251 146  60;
+  --c-brand-hover:  253 186 116;
+  --c-brand-soft:    52  28  10;
+  --c-success:       52 211 153;
+  --c-success-soft:   8  47  31;
+  --c-warning:      251 191  36;
+  --c-warning-soft:  60  35   5;
+  --c-danger:       248 113 113;
+  --c-danger-soft:   59  17  17;
+  --c-info:          96 165 250;
+  --c-info-soft:     20  35  68;
+  /* Dark soft tints are dark enough that the base light semantics already pass AA. */
+  --c-brand-text:   251 146  60;
+  --c-success-text:  52 211 153;
+  --c-warning-text: 251 191  36;
+  --c-danger-text:  248 113 113;
+  --c-info-text:     96 165 250;
+  --c-cat-static:       96 165 250;  --c-cat-static-soft:  23  37  64;
+  --c-cat-line:        251 191  36;  --c-cat-line-soft:    60  40   8;
+  --c-cat-dest:         52 211 153;  --c-cat-dest-soft:     8  47  33;
+  --c-cat-time:        167 139 250;  --c-cat-time-soft:    40  28  70;
+  --c-snap:            236  72 153;
+
+  --shadow-card:        0 1px 0 rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  --shadow-card-hover:  0 1px 0 rgb(255 255 255 / 0.06), 0 4px 12px rgb(0 0 0 / 0.5), 0 24px 48px -16px rgb(0 0 0 / 0.8);
+  --shadow-pop:         0 8px 24px -8px rgb(0 0 0 / 0.8), 0 24px 48px -16px rgb(0 0 0 / 0.6);
+
+  --bg-grid: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.05) 1px, transparent 0);
+  --bg-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    background-color: rgb(var(--c-canvas));
+  }
+  body {
+    @apply bg-canvas text-fg font-sans antialiased;
+    font-feature-settings: 'ss01', 'ss02', 'cv11';
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+  /* Even line breaks on short headings; fewer orphans in running prose. */
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection {
+    background: rgb(var(--c-brand) / 0.35);
+    color: rgb(var(--c-fg));
+  }
+  *:focus-visible {
+    outline: 2px solid rgb(var(--c-brand));
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  /* Tabular figures for time / metric numbers */
+  .nums-tabular { font-variant-numeric: tabular-nums; }
+  /* Hairline tracking utility */
+  .tracking-eyebrow { letter-spacing: 0.08em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Section eyebrow */
+  .eyebrow {
+    @apply font-mono text-[10px] uppercase tracking-eyebrow text-fgSubtle;
+  }
+  /* Standard card */
+  .card {
+    @apply bg-surface border border-line rounded-xl shadow-card;
+  }
+  .card-flat {
+    @apply bg-surface border border-line rounded-xl;
+  }
+  /* KBD-style chip */
+  .kbd {
+    @apply inline-flex items-center px-1.5 h-5 rounded-md border border-line bg-elevated text-fgMuted font-mono text-[10px];
+  }
+}
+
+@layer utilities {
+  /* Backdrop grid — used behind login + topbar */
+  .bg-dotgrid {
+    background-image: var(--bg-grid);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+  .bg-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: var(--bg-noise);
+    mix-blend-mode: overlay;
+  }
+
+  /* Scrollbars — flat, slate, theme-aware */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--c-line-strong)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--c-line-strong));
+    border-radius: 999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--c-fg-subtle));
+  }
+
+  /* Reusable focus ring (used on interactive surfaces beyond <input>) */
+  .ring-brand-soft {
+    box-shadow: 0 0 0 4px rgb(var(--c-brand) / 0.15);
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--c-elevated)) 0%,
+      rgb(var(--c-hover)) 50%,
+      rgb(var(--c-elevated)) 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer rounded-md;
+  }
+
+  /* Marquee */
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .animate-marquee { animation: marquee 50s linear infinite; }
+
+  /* Soft underline-grow */
+  .underline-grow {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 240ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .underline-grow:hover,
+  .underline-grow:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Theme-aware Leaflet overrides */
+  .leaflet-container {
+    background: rgb(var(--c-elevated)) !important;
+    font-family: 'Geist', system-ui, sans-serif !important;
+  }
+  [data-theme="dark"] .leaflet-tile {
+    filter: hue-rotate(180deg) invert(0.95) brightness(0.85) contrast(0.95);
+  }
+  .leaflet-popup-content-wrapper {
+    background: rgb(var(--c-surface)) !important;
+    color: rgb(var(--c-fg)) !important;
+    border: 1px solid rgb(var(--c-line)) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--shadow-pop) !important;
+    padding: 2px 4px !important;
+  }
+  .leaflet-popup-tip {
+    background: rgb(var(--c-surface)) !important;
+    border: 1px solid rgb(var(--c-line)) !important;
+  }
+  .leaflet-popup-content {
+    margin: 10px 14px !important;
+    font-family: 'Geist', system-ui, sans-serif !important;
+  }
+  .leaflet-control-attribution {
+    background: rgb(var(--c-surface) / 0.85) !important;
+    color: rgb(var(--c-fg-subtle)) !important;
+    border-top-left-radius: 6px !important;
+    font-family: 'Geist Mono', ui-monospace, monospace !important;
+    font-size: 9px !important;
+    padding: 2px 6px !important;
+  }
+  .leaflet-control-attribution a { color: rgb(var(--c-fg-muted)) !important; }
+  .leaflet-control-zoom a {
+    background: rgb(var(--c-surface)) !important;
+    color: rgb(var(--c-fg)) !important;
+    border: 1px solid rgb(var(--c-line)) !important;
+    border-radius: 6px !important;
+    font-family: 'Geist', system-ui, sans-serif !important;
+    font-weight: 600 !important;
+    transition: background 150ms, color 150ms;
+  }
+  .leaflet-control-zoom a + a { margin-top: 4px !important; }
+  .leaflet-control-zoom a:hover {
+    background: rgb(var(--c-brand)) !important;
+    border-color: rgb(var(--c-brand)) !important;
+    color: white !important;
+  }
+}
