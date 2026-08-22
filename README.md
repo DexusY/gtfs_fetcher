@@ -1,5 +1,7 @@
 # gtfs_app
 
+[![CI](https://github.com/DexusY/gtfs_app/actions/workflows/ci.yml/badge.svg)](https://github.com/DexusY/gtfs_app/actions/workflows/ci.yml)
+
 A web tool for configuring and previewing live public-transport departure boards.
 Point it at a GTFS feed, pick a stop on the map, and get a PNG (or EPD payload for
 e-paper displays) ready to push to a screen.
@@ -163,6 +165,17 @@ register_template("my_template", render_my_template)
 
 Shared drawing helpers are in `src/templates/shared.py`.
 Locale strings (en/pl/de) are in `src/gtfs_locale.py`.
+
+---
+
+## Roadmap
+
+- [ ] Replace README screenshot placeholders with real captures/GIFs of the dashboard, layout editor, and admin panel
+- [ ] Frontend design pass — consistent empty/loading/error states across pages, spacing and typography audit
+- [ ] Deploy a public read-only demo instance (seed data only, no write access) so the tool can be tried without running it locally
+- [ ] Publish the OpenAPI docs (FastAPI's `/docs` output) as a static page alongside this repo
+- [ ] **Future feature:** surface GTFS-RT service alerts (delays, cancellations, detours) on the board templates, not just trip updates
+- [ ] **Future feature:** frontend i18n for the dashboard UI itself, reusing the en/pl/de locale strings already used for rendered boards (`src/gtfs_locale.py`)
 
 ---
 
