@@ -11,6 +11,10 @@ build/
 node_modules/
 .next/
 
+# C extension build output
+c_modules/*.so
+c_modules/src/*.o
+
 # Playwright
 frontend/test-results/
 frontend/playwright-report/
